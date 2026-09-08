@@ -1,0 +1,14 @@
+[package]
+name = "aio-plugin-settings"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+az-dioxus-admin-shell = { git = "https://github.com/zjarlin/dioxus-admin-workbench.git", rev = "b2d33b9eb404ef06e924eb658403cd3b55d98c98" }
+az-ui-components = { git = "https://github.com/zjarlin/dioxus-admin-workbench.git", rev = "b2d33b9eb404ef06e924eb658403cd3b55d98c98" }
+dill = "0.15.0"
+dioxus = { version = "=0.7.9", default-features = false, features = ["macro", "html", "signals"] }
+
+[lints.rust]
+unsafe_code = "forbid"
