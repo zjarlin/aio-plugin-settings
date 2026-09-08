@@ -12,14 +12,19 @@ impl ApplicationPlugin for SettingsPlugin {
             id: "settings",
             label: "设置中心",
             icon: Some("settings"),
-            scene: ApplicationScene { id: "system", label: "系统" },
+            scene: ApplicationScene {
+                id: "system",
+                label: "系统",
+            },
             render: SettingsPage,
         }]
     }
 }
 
 pub fn register(builder: &mut CatalogBuilder) {
-    builder.add_value(SettingsPlugin).bind::<dyn ApplicationPlugin, SettingsPlugin>();
+    builder
+        .add_value(SettingsPlugin)
+        .bind::<dyn ApplicationPlugin, SettingsPlugin>();
 }
 
 #[allow(non_snake_case)]
