@@ -35,7 +35,7 @@ pub fn register(builder: &mut CatalogBuilder) {
 fn SettingsPage() -> Element {
     let mut registry = use_signal(String::new);
     let status = use_signal(|| None::<String>);
-    let session = use_resource(aio_plugin_identity_client::load_session);
+    let session = use_resource(load_session);
     let session = session.read().as_ref().cloned();
     rsx! {
         section {
@@ -86,6 +86,32 @@ fn SettingsPage() -> Element {
             }
         }
     }
+}
+
+#[cfg(target_arch = "wasm32")]
+async fn load_session() -> Result<Option<aio_plugin_identity_model::SessionView>, String> {
+    let response = gloo_net::http::Request::get("/api/auth/session")
+        .send()
+        .await
+        .map_err(|error| error.to_string())?;
+    if response.status() == 401 {
+        return Ok(None);
+    }
+    if !response.ok() {
+        return Err(response.text().await.unwrap_or_default());
+    }
+    response
+        .json::<aio_plugin_identity_model::IdentityResponse<
+            aio_plugin_identity_model::SessionView,
+        >>()
+        .await
+        .map(|response| Some(response.data))
+        .map_err(|error| error.to_string())
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+async fn load_session() -> Result<Option<aio_plugin_identity_model::SessionView>, String> {
+    Ok(None)
 }
 
 #[cfg(target_arch = "wasm32")]
