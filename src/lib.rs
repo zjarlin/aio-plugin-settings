@@ -94,18 +94,15 @@ async fn load_session() -> Result<Option<aio_plugin_identity_model::SessionView>
         .send()
         .await
         .map_err(|error| error.to_string())?;
-    if response.status() == 401 {
-        return Ok(None);
-    }
     if !response.ok() {
         return Err(response.text().await.unwrap_or_default());
     }
     response
         .json::<aio_plugin_identity_model::IdentityResponse<
-            aio_plugin_identity_model::SessionView,
+            Option<aio_plugin_identity_model::SessionView>,
         >>()
         .await
-        .map(|response| Some(response.data))
+        .map(|response| response.data)
         .map_err(|error| error.to_string())
 }
 
