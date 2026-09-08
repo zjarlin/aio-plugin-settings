@@ -34,6 +34,8 @@ pub fn register(builder: &mut CatalogBuilder) {
 fn SettingsPage() -> Element {
     let mut registry = use_signal(String::new);
     let status = use_signal(|| None::<String>);
+    let session = use_resource(aio_plugin_identity_client::load_session);
+    let session = session.read().as_ref().cloned();
     rsx! {
         section {
             h2 { "设置中心" }
@@ -41,7 +43,15 @@ fn SettingsPage() -> Element {
             div { class: "grid gap-3 md:grid-cols-2",
                 article { class: "border p-4",
                     h3 { "当前租户" }
-                    p { "默认租户" }
+                    match session.as_ref() {
+                        Some(Ok(Some(session))) => rsx! {
+                            p { "{session.tenant_label}" }
+                            p { class: "text-sm text-muted-foreground", "{session.tenant_id}" }
+                        },
+                        Some(Ok(None)) => rsx! { p { role: "alert", "会话已失效" } },
+                        Some(Err(error)) => rsx! { p { role: "alert", "读取失败：{error}" } },
+                        None => rsx! { p { "正在读取" } },
+                    }
                 }
                 article { class: "border p-4",
                     h3 { "Git 市场源" }
@@ -64,6 +74,10 @@ fn SettingsPage() -> Element {
                 article { class: "border p-4",
                     h3 { "运行时" }
                     p { "Wasm Component 与独立进程由宿主隔离管理。" }
+                }
+                article { class: "border p-4",
+                    h3 { "会话安全" }
+                    p { "会话使用 HttpOnly、SameSite Cookie；修改密码后其他会话失效。" }
                 }
             }
             if let Some(message) = status() {

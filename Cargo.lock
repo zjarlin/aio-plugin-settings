@@ -12,9 +12,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "aio-plugin-identity-client"
+version = "0.1.0"
+source = "git+https://github.com/zjarlin/aio-plugin-identity.git?rev=e1a022f7906fcab17a6839bfc5fed9904500e574#e1a022f7906fcab17a6839bfc5fed9904500e574"
+dependencies = [
+ "aio-plugin-identity-model",
+ "az-dioxus-admin-shell",
+ "az-ui-components",
+ "dill",
+ "dioxus",
+ "gloo-net",
+ "serde_json",
+ "web-sys",
+]
+
+[[package]]
+name = "aio-plugin-identity-model"
+version = "0.1.0"
+source = "git+https://github.com/zjarlin/aio-plugin-identity.git?rev=e1a022f7906fcab17a6839bfc5fed9904500e574#e1a022f7906fcab17a6839bfc5fed9904500e574"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "aio-plugin-settings"
 version = "0.1.0"
 dependencies = [
+ "aio-plugin-identity-client",
  "az-dioxus-admin-shell",
  "az-ui-components",
  "dill",
