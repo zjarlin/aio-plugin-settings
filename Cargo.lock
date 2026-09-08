@@ -17,8 +17,8 @@ version = "0.1.0"
 source = "git+https://github.com/zjarlin/aio-plugin-identity.git?rev=e1a022f7906fcab17a6839bfc5fed9904500e574#e1a022f7906fcab17a6839bfc5fed9904500e574"
 dependencies = [
  "aio-plugin-identity-model",
- "az-dioxus-admin-shell",
- "az-ui-components",
+ "az-dioxus-admin-shell 2026.8.17 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=7ffc224ce07f12b0726738f5cd7198567e9fb91d)",
+ "az-ui-components 2026.8.17 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=7ffc224ce07f12b0726738f5cd7198567e9fb91d)",
  "dill",
  "dioxus",
  "gloo-net",
@@ -39,8 +39,8 @@ name = "aio-plugin-settings"
 version = "0.1.0"
 dependencies = [
  "aio-plugin-identity-client",
- "az-dioxus-admin-shell",
- "az-ui-components",
+ "az-dioxus-admin-shell 2026.8.17 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=11c0d3856e541e3421854a2a96e995ba02546c3a)",
+ "az-ui-components 2026.8.17 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=11c0d3856e541e3421854a2a96e995ba02546c3a)",
  "dill",
  "dioxus",
  "gloo-net",
@@ -73,6 +73,21 @@ checksum = "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53"
 [[package]]
 name = "az-admin-shell-core"
 version = "2026.8.13"
+source = "git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=11c0d3856e541e3421854a2a96e995ba02546c3a#11c0d3856e541e3421854a2a96e995ba02546c3a"
+dependencies = [
+ "anyhow",
+ "convert_case",
+ "deunicode",
+ "pinyin",
+ "rudi",
+ "serde",
+ "serde_json",
+ "uuid",
+]
+
+[[package]]
+name = "az-admin-shell-core"
+version = "2026.8.13"
 source = "git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=7ffc224ce07f12b0726738f5cd7198567e9fb91d#7ffc224ce07f12b0726738f5cd7198567e9fb91d"
 dependencies = [
  "anyhow",
@@ -88,11 +103,11 @@ dependencies = [
 [[package]]
 name = "az-dioxus-admin-shell"
 version = "2026.8.17"
-source = "git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=7ffc224ce07f12b0726738f5cd7198567e9fb91d#7ffc224ce07f12b0726738f5cd7198567e9fb91d"
+source = "git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=11c0d3856e541e3421854a2a96e995ba02546c3a#11c0d3856e541e3421854a2a96e995ba02546c3a"
 dependencies = [
  "anyhow",
- "az-admin-shell-core",
- "az-ui-components",
+ "az-admin-shell-core 2026.8.13 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=11c0d3856e541e3421854a2a96e995ba02546c3a)",
+ "az-ui-components 2026.8.17 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=11c0d3856e541e3421854a2a96e995ba02546c3a)",
  "dill",
  "dioxus",
  "futures-util",
@@ -100,6 +115,33 @@ dependencies = [
  "manganis",
  "rudi",
  "serde_json",
+]
+
+[[package]]
+name = "az-dioxus-admin-shell"
+version = "2026.8.17"
+source = "git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=7ffc224ce07f12b0726738f5cd7198567e9fb91d#7ffc224ce07f12b0726738f5cd7198567e9fb91d"
+dependencies = [
+ "anyhow",
+ "az-admin-shell-core 2026.8.13 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=7ffc224ce07f12b0726738f5cd7198567e9fb91d)",
+ "az-ui-components 2026.8.17 (git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=7ffc224ce07f12b0726738f5cd7198567e9fb91d)",
+ "dill",
+ "dioxus",
+ "futures-util",
+ "icons",
+ "manganis",
+ "rudi",
+ "serde_json",
+]
+
+[[package]]
+name = "az-ui-components"
+version = "2026.8.17"
+source = "git+https://github.com/zjarlin/dioxus-admin-workbench.git?rev=11c0d3856e541e3421854a2a96e995ba02546c3a#11c0d3856e541e3421854a2a96e995ba02546c3a"
+dependencies = [
+ "dioxus",
+ "dioxus-icons",
+ "manganis",
 ]
 
 [[package]]

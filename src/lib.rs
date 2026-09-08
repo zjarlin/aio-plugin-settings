@@ -19,6 +19,7 @@ impl ApplicationPlugin for SettingsPlugin {
                 id: "system",
                 label: "系统",
             },
+            required_permission: None,
             render: SettingsPage,
         }]
     }
