@@ -1,5 +1,8 @@
 use az_dioxus_admin_shell::{ApplicationPage, ApplicationPlugin, ApplicationScene};
-use az_ui_components::button::{Button, ButtonVariant};
+use az_ui_components::{
+    button::{Button, ButtonVariant},
+    input::Input,
+};
 use dill::CatalogBuilder;
 use dioxus::prelude::*;
 
@@ -29,7 +32,8 @@ pub fn register(builder: &mut CatalogBuilder) {
 
 #[allow(non_snake_case)]
 fn SettingsPage() -> Element {
-    let mut saved = use_signal(|| false);
+    let mut registry = use_signal(String::new);
+    let status = use_signal(|| None::<String>);
     rsx! {
         section {
             h2 { "设置中心" }
@@ -38,11 +42,23 @@ fn SettingsPage() -> Element {
                 article { class: "border p-4",
                     h3 { "当前租户" }
                     p { "默认租户" }
+                }
+                article { class: "border p-4",
+                    h3 { "Git 市场源" }
+                    Input {
+                        value: registry(),
+                        placeholder: "https://github.com/example/aio-marketplace.git",
+                        aria_label: "Git 市场源",
+                        oninput: move |event: FormEvent| registry.set(event.value()),
+                    }
                     Button {
                         r#type: "button",
                         variant: ButtonVariant::Outline,
-                        onclick: move |_| saved.set(true),
-                        "保存设置"
+                        onclick: move |_| {
+                            let source = registry();
+                            spawn(async move { add_registry(source, status).await });
+                        },
+                        "添加市场源"
                     }
                 }
                 article { class: "border p-4",
@@ -50,7 +66,32 @@ fn SettingsPage() -> Element {
                     p { "Wasm Component 与独立进程由宿主隔离管理。" }
                 }
             }
-            if saved() { p { role: "status", "设置已保存" } }
+            if let Some(message) = status() {
+                p { role: "status", "{message}" }
+            }
         }
     }
+}
+
+#[cfg(target_arch = "wasm32")]
+async fn add_registry(source: String, mut status: Signal<Option<String>>) {
+    status.set(Some("正在校验市场源".to_owned()));
+    let body = serde_json::json!({ "source": source }).to_string();
+    let result = gloo_net::http::Request::post("/api/runtime/registries")
+        .header("content-type", "application/json")
+        .body(body)
+        .map_err(|error| error.to_string());
+    match result {
+        Ok(request) => match request.send().await {
+            Ok(response) if response.ok() => status.set(Some("市场源已添加".to_owned())),
+            Ok(response) => status.set(Some(response.text().await.unwrap_or_default())),
+            Err(error) => status.set(Some(error.to_string())),
+        },
+        Err(error) => status.set(Some(error)),
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+async fn add_registry(_source: String, mut status: Signal<Option<String>>) {
+    status.set(Some("桌面端市场源保存尚未连接服务端".to_owned()));
 }
