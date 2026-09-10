@@ -19,6 +19,7 @@ impl ApplicationPlugin for SettingsPlugin {
                 id: "system",
                 label: "系统",
             },
+            menu_path: Vec::new(),
             required_permission: None,
             render: SettingsPage,
         }]
